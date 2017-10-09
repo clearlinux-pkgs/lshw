@@ -4,7 +4,7 @@
 #
 Name     : lshw
 Version  : 1
-Release  : 1
+Release  : 2
 URL      : http://www.ezix.org/software/files/lshw-B.02.18.tar.gz
 Source0  : http://www.ezix.org/software/files/lshw-B.02.18.tar.gz
 Summary  : No detailed summary available
@@ -14,6 +14,7 @@ Requires: lshw-bin
 Requires: lshw-locales
 Requires: lshw-data
 Requires: lshw-doc
+Patch1: 0001-Avoid-crash-in-scan-dmi-sysfs-when-running-as-non-root.patch
 
 %description
 lshw: HardWare LiSter for Linux
@@ -55,17 +56,18 @@ locales components for the lshw package.
 
 %prep
 %setup -q -n lshw-B.02.18
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1501878989
+export SOURCE_DATE_EPOCH=1507568169
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1501878989
+export SOURCE_DATE_EPOCH=1507568169
 rm -rf %{buildroot}
 %make_install
 %find_lang lshw
