@@ -1,0 +1,25 @@
+From ee5a18a4baf0a838e112afb79112c3c9e2291582 Mon Sep 17 00:00:00 2001
+From: dann frazier <dann.frazier@canonical.com>
+Date: Thu, 9 Jun 2016 17:40:54 -0600
+Subject: [PATCH] Avoid crash in scan_dmi_sysfs() when running as non-root
+ (#716)
+
+Instead of just checking that the sysfs files exist, make sure we
+can also read them.
+---
+ src/core/dmi.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/core/dmi.cc b/src/core/dmi.cc
+index ced891a..8bfe86f 100644
+--- a/src/core/dmi.cc
++++ b/src/core/dmi.cc
+@@ -1823,7 +1823,7 @@ static bool smbios_entry_point(const u8 *buf, size_t len,
+ 
+ static bool scan_dmi_sysfs(hwNode & n)
+ {
+-  if (!exists(SYSFSDMI "/smbios_entry_point") || !exists(SYSFSDMI "/DMI"))
++  if (access(SYSFSDMI "/smbios_entry_point", R_OK) || access(SYSFSDMI "/DMI", R_OK))
+     return false;
+ 
+   uint32_t table_len = 0;
