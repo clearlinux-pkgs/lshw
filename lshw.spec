@@ -4,17 +4,19 @@
 #
 Name     : lshw
 Version  : 1
-Release  : 4
+Release  : 5
 URL      : http://www.ezix.org/software/files/lshw-B.02.18.tar.gz
 Source0  : http://www.ezix.org/software/files/lshw-B.02.18.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
-Requires: lshw-bin
-Requires: lshw-locales
-Requires: lshw-data
-Requires: lshw-doc
+Requires: lshw-bin = %{version}-%{release}
+Requires: lshw-data = %{version}-%{release}
+Requires: lshw-license = %{version}-%{release}
+Requires: lshw-locales = %{version}-%{release}
+Requires: lshw-man = %{version}-%{release}
 Patch1: 0001-Avoid-crash-in-scan-dmi-sysfs-when-running-as-non-root.patch
+Patch2: 0002-fix-locale-file-mode.patch
 
 %description
 lshw: HardWare LiSter for Linux
@@ -24,7 +26,9 @@ lshw is a small tool to provide detailed information on the hardware configurati
 %package bin
 Summary: bin components for the lshw package.
 Group: Binaries
-Requires: lshw-data
+Requires: lshw-data = %{version}-%{release}
+Requires: lshw-license = %{version}-%{release}
+Requires: lshw-man = %{version}-%{release}
 
 %description bin
 bin components for the lshw package.
@@ -38,12 +42,12 @@ Group: Data
 data components for the lshw package.
 
 
-%package doc
-Summary: doc components for the lshw package.
-Group: Documentation
+%package license
+Summary: license components for the lshw package.
+Group: Default
 
-%description doc
-doc components for the lshw package.
+%description license
+license components for the lshw package.
 
 
 %package locales
@@ -54,21 +58,32 @@ Group: Default
 locales components for the lshw package.
 
 
+%package man
+Summary: man components for the lshw package.
+Group: Default
+
+%description man
+man components for the lshw package.
+
+
 %prep
 %setup -q -n lshw-B.02.18
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1507568169
-make V=1  %{?_smp_mflags}
+export SOURCE_DATE_EPOCH=1538584699
+make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1507568169
+export SOURCE_DATE_EPOCH=1538584699
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/lshw
+cp COPYING %{buildroot}/usr/share/package-licenses/lshw/COPYING
 %make_install
 %find_lang lshw
 
@@ -86,9 +101,13 @@ rm -rf %{buildroot}
 /usr/share/lshw/pci.ids
 /usr/share/lshw/usb.ids
 
-%files doc
-%defattr(-,root,root,-)
-%doc /usr/share/man/man1/*
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/lshw/COPYING
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/lshw.1
 
 %files locales -f lshw.lang
 %defattr(-,root,root,-)
