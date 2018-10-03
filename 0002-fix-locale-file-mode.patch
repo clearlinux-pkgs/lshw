@@ -1,0 +1,25 @@
+From 295539678eabfc205720723ce27ef3e2f2f6fa0a Mon Sep 17 00:00:00 2001
+From: "Simental Magana, Marcos" <marcos.simental.magana@intel.com>
+Date: Wed, 3 Oct 2018 11:33:36 -0500
+Subject: [PATCH] fix locale file mode
+
+---
+ src/po/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/po/Makefile b/src/po/Makefile
+index 36fbdb7..538e91c 100644
+--- a/src/po/Makefile
++++ b/src/po/Makefile
+@@ -17,7 +17,7 @@ $(PACKAGENAME).pot: POTFILES
+ 	msgfmt -v -o $@ $^
+ 
+ install: $(CATALOGS)
+-	$(foreach i, $(LANGUAGES), install -D $(i).mo $(DESTDIR)/$(DATADIR)/locale/$(i)/LC_MESSAGES/$(PACKAGENAME).mo ;)
++	$(foreach i, $(LANGUAGES), install -D -m 0644 $(i).mo $(DESTDIR)/$(DATADIR)/locale/$(i)/LC_MESSAGES/$(PACKAGENAME).mo ;)
+ 	
+ clean:
+ 	rm -f $(CATALOGS) $(PACKAGENAME).pot
+-- 
+2.19.0
+
