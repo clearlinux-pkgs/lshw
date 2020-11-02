@@ -4,7 +4,7 @@
 #
 Name     : lshw
 Version  : 1
-Release  : 6
+Release  : 7
 URL      : http://www.ezix.org/software/files/lshw-B.02.18.tar.gz
 Source0  : http://www.ezix.org/software/files/lshw-B.02.18.tar.gz
 Summary  : No detailed summary available
