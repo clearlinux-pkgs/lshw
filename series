@@ -1,2 +1,1 @@
-0001-Avoid-crash-in-scan-dmi-sysfs-when-running-as-non-root.patch
 0002-fix-locale-file-mode.patch
