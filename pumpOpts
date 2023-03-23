@@ -1,0 +1,2 @@
+# Just capture the numeric parts of the version string
+regex = [a-zA-Z]\.(\d+(?:\.\d+)+)
